@@ -289,12 +289,13 @@ class LoanSimulator:
         df = pd.DataFrame(self.records)
 
         # Round numeric columns
-        numeric_cols = ['interest_rate', 'current_balance', 'principal_balance',
+        numeric_cols = ['current_balance', 'principal_balance',
                        'interest_accrued', 'loan_interest_paid',
                        'loan_principal_paid', 'total_payment_amount']
         for col in numeric_cols:
             df[col] = df[col].round(2)
 
+        df['interest_rate'] = df['interest_rate'].round(4)
         return df
 
     def print_summary(self) -> None:
@@ -334,14 +335,14 @@ def load_loan_data(filepath: str) -> pd.DataFrame:
 def create_payment_schedule() -> List[float]:
     """Define the payment schedule."""
     schedule = []
-    schedule += [1500] * 2          # Jan-Feb 2026
-    schedule += [5000]              # March 2026 bonus
-    schedule += [2500] * 11         # Apr 2026 - Feb 2027
-    schedule += [8000]              # March 2027 bonus
-    schedule += [3100] * 11         # Apr 2027 - Feb 2028
-    schedule += [5000]              # March 2028 bonus
-    schedule += [3500] * 18         # Apr 2028 - Sep 2029
-    schedule += [3800] * 100        # Onward
+    schedule += [1500] * 2       # months 1-2
+    schedule += [5000]           # month 3
+    schedule += [2500] * 11      # etc.
+    schedule += [8000]
+    schedule += [3100] * 11
+    schedule += [5000]
+    schedule += [3500] * 18
+    schedule += [3800] * 100
     return schedule
 
 def load_loan_data(filepath: str = "./loan-data-full.csv") -> pd.DataFrame:
