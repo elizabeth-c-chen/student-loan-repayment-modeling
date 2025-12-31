@@ -2,6 +2,8 @@
 
 ### ~ heyo! it's not perfect, it's a WIP! ~
 
+Check out the deployment at https://student-loan-repayment-planner.streamlit.app
+or clone this repo and run it yourself!
 ## Setup Instructions
 
 ### Prerequisites
