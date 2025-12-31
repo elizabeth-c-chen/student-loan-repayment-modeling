@@ -1,5 +1,7 @@
 # Student Loan Repayment Simulator
 
+### ~ heyo! it's not perfect, it's a WIP! ~
+
 ## Setup Instructions
 
 ### Prerequisites
