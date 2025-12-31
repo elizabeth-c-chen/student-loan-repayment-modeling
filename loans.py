@@ -1,9 +1,8 @@
 import warnings
 warnings.filterwarnings('ignore')
-import plotly.express as px
 import pandas as pd
 import numpy as np
-from datetime import date, timedelta
+from datetime import date
 from typing import List, Dict, Optional
 from abc import ABC, abstractmethod
 
