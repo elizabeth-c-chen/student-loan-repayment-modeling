@@ -311,27 +311,6 @@ class LoanSimulator:
 
 # ==================== Main Execution ====================
 
-def load_loan_data(filepath: str) -> pd.DataFrame:
-    """Load and preprocess loan data."""
-    df = pd.read_csv(
-        filepath,
-        dtype={
-            'interest_rate': np.float64,
-            'current_balance': np.float64,
-            'principal_balance': np.float64,
-            'monthly_payment': np.float64
-        }
-    )
-
-    df['date'] = pd.to_datetime(df['date'])
-    df = df.loc[df['date'] == df['date'].max()]  # Take latest data only
-
-    # Calculate interest accrued
-    df['interest_accrued'] = df['current_balance'] - df['principal_balance']
-
-    return df
-
-
 def create_payment_schedule() -> List[float]:
     """Define the payment schedule."""
     schedule = []
