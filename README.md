@@ -4,7 +4,12 @@
 
 Check out the deployment at https://student-loan-repayment-planner.streamlit.app
 or clone this repo and run it yourself!
-## Setup Instructions
+
+### Future Enhancements to be added
+* Visualize multiple payment scenarios on a chart and compare total amounts paid
+
+
+## Setup
 
 ### Prerequisites
 - Python 3.8 or higher

@@ -6,7 +6,6 @@ from textwrap import dedent
 from typing import List
 import plotly.express as px
 
-# Import loan classes (assumes loans.py is in same directory)
 try:
     from loans import (
         Loan, LoanCollection, AvalanchePaymentStrategy,
@@ -207,7 +206,7 @@ with tab0:
 
     st.markdown("""
     **Q: What if I don't have a CSV file?**
-    A: The app can load a default file (loan-data-full.csv) if available. Otherwise, create a simple CSV in Excel or Google Sheets with the required columns.
+    A: The app can load a default file (data/loan-data-full.csv) if available. Otherwise, create a simple CSV in Excel or Google Sheets with the required columns.
 
     **Q: Can I change my payment plan mid-simulation?**
     A: Create a custom payment schedule in the "Edit Payment Schedule" tab that reflects your desired schedule and ensure that the Custom Payment Plan is selected in the Loan Simulator tab.
@@ -307,7 +306,7 @@ with tab1:
             loan_df = pd.read_csv(uploaded_file)
         else:
             # Try to load default loan data file
-            default_file_path = "loan-data-full.csv"
+            default_file_path = "data/loan-data-full.csv"
             try:
                 loan_df = pd.read_csv(default_file_path)
                 st.info(f"Using default loan data from '{default_file_path}'")
