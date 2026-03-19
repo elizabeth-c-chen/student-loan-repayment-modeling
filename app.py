@@ -133,7 +133,7 @@ with tab0:
         'date': ['2026-01-16', '2026-01-16', '2026-01-16']
     }
     example_df = pd.DataFrame(example_data)
-    st.dataframe(example_df, use_container_width=True)
+    st.dataframe(example_df, width='stretch')
 
     st.markdown("""
     **Required Columns:**
@@ -234,7 +234,7 @@ with tab1:
         # Date picker for start date
         start_date = st.date_input(
             "Simulation Start Date",
-            value=date(2026, 1, 16),
+            value=date(2026, 4, 15),
             label_visibility="visible",
             key="sim_start_date"
         )
@@ -259,7 +259,7 @@ with tab1:
         if schedule_type == "Standard Repayment":
             constant_payment = st.number_input(
                 "Standard Monthly Payment Amount",
-                value=st.session_state.get("sim_constant_payment", 1600.00),
+                value=st.session_state.get("sim_constant_payment", 1552.22),
                 min_value=0.0,
                 step=10.0,
                 label_visibility="visible",
@@ -281,14 +281,14 @@ with tab1:
         # Prior payment inputs
         prior_principal = st.number_input(
             "Total Principal Paid to Date",
-            value=7951.15,
+            value=11362.86,
             min_value=0.0,
             step=100.0,
             label_visibility="visible"
         )
         prior_interest = st.number_input(
             "Total Interest Paid to Date",
-            value=1246.13,
+            value=1334.42,
             min_value=0.0,
             step=100.0,
             label_visibility="visible"
@@ -300,7 +300,7 @@ with tab1:
     st.divider()
 
     # Run simulation button
-    if st.button("Run Simulation", type="primary", use_container_width=True):
+    if st.button("Run Simulation", type="primary", width='stretch'):
         # Use uploaded file or try to load default
         if uploaded_file is not None:
             loan_df = pd.read_csv(uploaded_file)
@@ -394,14 +394,14 @@ with tab1:
                     yaxis=dict(tickformat="$,.0f")
                 )
                 fig.update_traces(hovertemplate="<b>Loan: %{fullData.name}</b><br>Balance: $%{y:,.0f}<extra></extra>")
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
                 # Detailed results
                 st.subheader("Detailed Results")
                 results_display = results_df.copy()
                 results_display['date'] = results_display['date'].dt.strftime('%Y-%m-%d')
                 results_display['interest_rate'] = results_display['interest_rate'].apply(lambda x: f"{x:.4f}")
-                st.dataframe(results_display, use_container_width=True)
+                st.dataframe(results_display, width='stretch')
 
                 # Download results
                 csv = results_df.to_csv(index=False)
@@ -432,7 +432,7 @@ with tab2:
             label_visibility="visible",
             key="edit_payment_amount"
         )
-        regenerate_schedule = st.button("Regenerate Default Plan", type="secondary", use_container_width=True)
+        regenerate_schedule = st.button("Regenerate Default Plan", type="secondary", width='stretch')
 
 
     with col2:
@@ -461,13 +461,13 @@ with tab2:
     # Display and edit the dataframe (shows working copy, not the current active schedule)
     edited_df = st.data_editor(
         st.session_state.tab2_working_df,
-        use_container_width=True,
+        width='stretch',
         num_rows="dynamic"
     )
     st.write("**⚠️ Tip:** Click \"Save\" below and ensure the \"Custom Payment Plan\" button is selected in the Loan Simulator tab if you wish to use this custom plan!")
 
     # Save custom plan button
-    if st.button("Save Custom Payment Plan", type="primary", use_container_width=True, key="tab2_save"):
+    if st.button("Save Custom Payment Plan", type="primary", width='stretch', key="tab2_save"):
         st.session_state.tab2_working_df = edited_df
         st.session_state.tab2_last_saved_df = edited_df.copy()
         st.session_state.df = edited_df.copy()
@@ -489,7 +489,7 @@ with tab2:
     st.subheader("Payment Schedule Preview")
     schedule_display = st.session_state.tab2_last_saved_df.copy()
     schedule_display['Payment Date'] = schedule_display['Payment Date'].dt.strftime('%Y-%m-%d')
-    st.dataframe(schedule_display, use_container_width=True)
+    st.dataframe(schedule_display, width='stretch')
 
 
 # ==================== TAB 3: Payment Schedule Editor (Advanced) ====================
@@ -502,17 +502,16 @@ with tab3:
 
     # Show examples
     st.markdown("**Example 1:**")
-    st.code("schedule = [1500, 1500, 5000, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 2500, 8000, 3100]", language="python")
+    st.code("schedule = [1600, 1600, 2000, 2000, 2000, 2000, 2500, 2500, 2500, 2500, 3000, 3000, 3000, 3000]", language="python")
 
     st.markdown("**Example 2:**")
     st.code(dedent(
         """
         schedule = []
-        schedule += [1500] * 2       # months 1-2
-        schedule += [5000]           # month 3
-        schedule += [2500] * 11      # etc.
-        schedule += [8000]
-        schedule += [3100] * 11
+        schedule += [1600] * 4       # months 1-4
+        schedule += [2000] * 8       # months 5-12
+        schedule += [2500] * 12      # etc.
+        schedule += [3000] * 12
         schedule += [3500] * 24
         """), language="python")
 
@@ -521,21 +520,20 @@ with tab3:
         "Custom Payment Schedule (Python list)",
         value=dedent("""
             schedule = []
-            schedule += [1500] * 2
-            schedule += [5000]
-            schedule += [2500] * 11
-            schedule += [8000]
-            schedule += [3100] * 11
-            schedule += [3500] * 24
+        schedule += [1600] * 4       # months 1-4
+        schedule += [2000] * 8       # months 5-12
+        schedule += [2500] * 12      # etc.
+        schedule += [3000] * 12
+        schedule += [3500] * 24
             """).strip(),
         height=200,
         label_visibility="visible",
-        placeholder="[1500, 1500, 5000, ...] or schedule = [...]; schedule += [...]"
+        placeholder="[1600, 1600, 2000, ...] or schedule = [...]; schedule += [...]"
     )
     st.write("**⚠️ Tip:** Click \"Save\" below and ensure the \"Advanced Mode Repayment Plan\" button is selected in the Loan Simulator tab if you wish to use this custom plan!")
 
     # Apply advanced changes
-    if st.button("Save Custom Payment Plan", type="primary", use_container_width=True, key="tab3_save"):
+    if st.button("Save Custom Payment Plan", type="primary", width='stretch', key="tab3_save"):
         try:
             custom_schedule = None
 
@@ -591,4 +589,4 @@ with tab3:
 
     adv_schedule_display = st.session_state.tab3_last_saved_df.copy()
     adv_schedule_display['Payment Date'] = adv_schedule_display['Payment Date'].dt.strftime('%Y-%m-%d')
-    st.dataframe(adv_schedule_display, use_container_width=True)
+    st.dataframe(adv_schedule_display, width='stretch')
